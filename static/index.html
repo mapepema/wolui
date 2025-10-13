@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900 text-white h-full">
+<head>
+  <meta charset="UTF-8">
+  <title>Wake-on-LAN</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen">
+  <div class="text-center">
+    <h1 class="text-4xl font-bold mb-6">Wake My PC</h1>
+    <button id="wakeBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded">
+      Wake Up!
+    </button>
+    <p id="status" class="mt-4 text-gray-300"></p>
+  </div>
+
+  <script>
+    document.getElementById('wakeBtn').addEventListener('click', async () => {
+      const status = document.getElementById('status');
+      status.textContent = "Sending WOL packet...";
+      try {
+        const res = await fetch('/wake', { method: 'POST' });
+        if (res.ok) {
+          status.textContent = "✔ Wake-on-LAN packet sent!";
+        } else {
+          status.textContent = "✖ Failed to send WOL.";
+        }
+      } catch (err) {
+        status.textContent = "✖ Error sending request.";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
+
