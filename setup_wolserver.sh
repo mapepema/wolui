@@ -2,6 +2,9 @@
 
 set -e
 
+# The machine to wake: WOL_MAC=00:11:22:33:44:55 ./setup_wolserver.sh
+: "${WOL_MAC:?set WOL_MAC to the MAC address of the machine to wake}"
+
 APP_NAME="wolserver"
 INSTALL_DIR="/opt/$APP_NAME"
 SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
@@ -26,6 +29,7 @@ Description=Wake-on-LAN Web Server
 After=network.target
 
 [Service]
+Environment=WOL_MAC=${WOL_MAC}
 ExecStart=${INSTALL_DIR}/${APP_NAME}
 WorkingDirectory=${INSTALL_DIR}
 Restart=on-failure
